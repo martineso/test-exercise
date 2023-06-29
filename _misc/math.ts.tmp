@@ -1,0 +1,46 @@
+class Math {
+  callbacks: any[] = [];
+
+  constructor(protected currentValue: number) {
+  }
+
+  getCurrentValue() {
+    return this.currentValue;
+  }
+
+  calc(action: string, value: any) {
+    switch (action) {
+      case 'sum': {
+        this.currentValue += value;
+        break;
+      }
+      case 'multiple': {
+        this.currentValue *= value;
+        break;
+      }
+      case 'divide': {
+        this.currentValue /= value;
+        break;
+      }
+      case 'callback': {
+        this.currentValue = value(this.currentValue);
+        break;
+      }
+    }
+
+    this.callbacks.forEach(callback => {
+      this.currentValue = callback(this.currentValue);
+    })
+  }
+
+  addListener(callback: any) {
+    this.callbacks.push(callback)
+  }
+
+  removeListener(callback: any) {
+    // this.callbacks.shift();
+    this.callbacks = this.callbacks.filter(call => call != callback)
+  }
+}
+
+export default Math;
